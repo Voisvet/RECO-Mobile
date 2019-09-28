@@ -87,7 +87,7 @@ class MapScreen extends React.Component {
 
 
   render() {
-    const height = this.state.mode === 'search' ? SCREEN_HEIGHT * 0.75 : SCREEN_HEIGHT * 0.48;
+    const height = this.state.mode === 'search' ? SCREEN_HEIGHT * 0.9 : SCREEN_HEIGHT * 0.48;
 
     return (
       <View
@@ -110,22 +110,22 @@ class MapScreen extends React.Component {
               longitude: this.state.currentPosition.coords.longitude,
             }}
           />}
-          {this.state.trashPoints.map(point => (
+          {this.state.recyclePoints.map(point => (
             <Marker
-              onPress={() => this.setCurrentPoint(point, 'trash')}
-              key={'trash' + point.id.toString()}
-              image={require('../../icons/trashMarker.png')}
+              onPress={() => this.setCurrentPoint(point, 'recycling')}
+              key={'recycle' + point.id.toString()}
+              image={require('../../icons/recyclingMarker.png')}
               coordinate={{
                 latitude: point.pos_lat,
                 longitude: point.pos_lng,
               }}
             />
           ))}
-          {this.state.recyclePoints.map(point => (
+          {this.state.trashPoints.map(point => (
             <Marker
-              onPress={() => this.setCurrentPoint(point, 'recycling')}
-              key={'recycle' + point.id.toString()}
-              image={require('../../icons/recyclingMarker.png')}
+              onPress={() => this.setCurrentPoint(point, 'trash')}
+              key={'trash' + point.id.toString()}
+              image={require('../../icons/trashMarker.png')}
               coordinate={{
                 latitude: point.pos_lat,
                 longitude: point.pos_lng,

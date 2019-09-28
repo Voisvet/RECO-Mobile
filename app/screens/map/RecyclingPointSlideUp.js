@@ -18,6 +18,7 @@ import GlassIcon from '../../icons/trashTypes/GlassIcon.svg';
 import ClothesIcon from '../../icons/trashTypes/ClothesIcon.svg';
 import OthersIcon from '../../icons/trashTypes/OthersIcon.svg';
 import TechnicsIcon from '../../icons/trashTypes/TechnicsIcon.svg';
+import BatteryIcon from '../../icons/trashTypes/BatteryIcon.svg';
 
 import ClockIcon from '../../icons/clock.svg';
 import BuildingIcon from '../../icons/building.svg';
@@ -28,7 +29,7 @@ const variants = {
   'Бумага': PaperIcon,
   'Стекло': GlassIcon,
   'Металл': MetalIcon,
-  'Батарейки': null,
+  'Батарейки': BatteryIcon,
   'Опасные отходы': DangerousIcon,
   'Лампочки': LampIcon,
   'Пластик': PlasticIcon,

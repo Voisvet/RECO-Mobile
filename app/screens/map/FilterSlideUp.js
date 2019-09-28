@@ -17,53 +17,83 @@ import GlassIcon from '../../icons/trashTypes/GlassIcon.svg';
 import ClothesIcon from '../../icons/trashTypes/ClothesIcon.svg';
 import OthersIcon from '../../icons/trashTypes/OthersIcon.svg';
 import TechnicsIcon from '../../icons/trashTypes/TechnicsIcon.svg';
+import BatteryIcon from '../../icons/trashTypes/BatteryIcon.svg';
+import WheelIcon from '../../icons/trashTypes/WheelIcon.svg';
 
 const trashTypes = [
   [
     {
       title: 'Бумага',
+      value: 'Бумага',
       icon: PaperIcon,
     },
     {
       title: 'Металл',
+      value: 'Металл',
       icon: MetalIcon,
     },
     {
       title: 'Стекло',
+      value: 'Стекло',
       icon: GlassIcon,
     },
   ],
   [
     {
       title: 'Пластик',
+      value: 'Пластик',
       icon: PlasticIcon,
     },
     {
       title: 'Лампочки',
+      value: 'Лампочки',
       icon: LampIcon,
     },
     {
       title: 'Опасные',
+      value: 'Опасные отходы',
       icon: DangerousIcon,
     },
   ],
   [
     {
       title: 'Одежда',
+      value: 'Одежда',
       icon: ClothesIcon,
     },
     {
       title: 'Бытовой',
+      value: 'Бытовая техника',
       icon: TechnicsIcon,
     },
     {
+      title: 'Батарейки',
+      value: 'Батарейки',
+      icon: BatteryIcon,
+    },
+  ],
+  [
+    {
+      title: 'Шины',
+      value: 'Шины',
+      icon: WheelIcon,
+    },
+    {
       title: 'Иное',
+      value: 'Иное',
+      icon: OthersIcon,
+    },
+    {
+      title: 'Иное',
+      value: 'Иное',
       icon: OthersIcon,
     },
   ],
 ];
 
 export default class FilterSlideUp extends React.Component {
+  onPressHandler = (type) => console.log(type.value);
+
   render() {
     return (
       <View style={styles.container}>
@@ -73,8 +103,8 @@ export default class FilterSlideUp extends React.Component {
         {trashTypes.map(typesRow => (
           <View style={styles.row}>
             {typesRow.map(type => (
-              <View style={styles.iconContainer}>
-                <type.icon width={SCREEN_WIDTH / 5} height={SCREEN_WIDTH / 5}/>
+              <View style={styles.iconContainer} >
+                <type.icon width={SCREEN_WIDTH / 5} height={SCREEN_WIDTH / 5} onStartShouldSetResponder={() => console.log(type.value)}  />
                 <Text style={{fontWeight: '700'}}>{type.title}</Text>
               </View>
             ))}
