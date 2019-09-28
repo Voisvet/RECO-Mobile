@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions, StyleSheet, Animated } from 'react-native';
+import { View, Dimensions, StyleSheet, Animated, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Geolocation from '@react-native-community/geolocation';
@@ -7,7 +7,8 @@ import MapIcon from '../../icons/MapIcon';
 import FilterSlideUp from './FilterSlideUp';
 import RecyclingPointSlideUp from './RecyclingPointSlideUp';
 import TrashDeliverySlideUp from './TrashDeliverySlideUp';
-export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 class MapScreen extends React.Component {
   static navigationOptions = {
@@ -113,7 +114,7 @@ class MapScreen extends React.Component {
             <Marker
               onPress={() => this.setCurrentPoint(point, 'trash')}
               key={'trash' + point.id.toString()}
-              pinColor={'blue'}
+              image={require('../../icons/trashMarker.png')}
               coordinate={{
                 latitude: point.pos_lat,
                 longitude: point.pos_lng,
@@ -124,7 +125,7 @@ class MapScreen extends React.Component {
             <Marker
               onPress={() => this.setCurrentPoint(point, 'recycling')}
               key={'recycle' + point.id.toString()}
-              pinColor={'red'}
+              image={require('../../icons/recyclingMarker.png')}
               coordinate={{
                 latitude: point.pos_lat,
                 longitude: point.pos_lng,
@@ -136,7 +137,7 @@ class MapScreen extends React.Component {
           ref={c => (this._panel = c)}
           draggableRange={{
             ...this.props.draggableRange,
-            top: height,
+            top: height - 1,
           }}
           animatedValue={this._draggedValue}
           onMomentumDragEnd={this.onReset}
