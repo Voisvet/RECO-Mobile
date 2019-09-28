@@ -24,13 +24,38 @@ class MapScreen extends React.Component {
   state = {
     initialPosition: undefined,
     currentPosition: undefined,
+    recyclePoints: [],
+    currentRecyclePoint: undefined,
+    mode: 'search',
   };
 
+  updatePoints(c_lat, c_lng, trash_type): void {
+    const url = `https://trash-proc-app.herokuapp.com/recycles?radius=40000.0&c_lat=${c_lat}&c_lng=${c_lng}${trash_type ? `trash_types=${trash_type}` : ''}`;
+    console.log(url);
+    fetch(url,
+    {
+      method: 'GET',
+    })
+      .then(response => response.json())
+      .then(result => this.setState({recyclePoints: result.result}));
+  }
+
+  setCurrentRecyclingPoint(point) {
+    this.setState({
+      currentRecyclePoint: point,
+      mode: 'recycling',
+    });
+    this._panel.show();
+  }
+
   componentDidMount(): void {
-    Geolocation.getCurrentPosition(info => this.setState({
-      initialPosition: info,
-      currentPosition: info,
-    }));
+    Geolocation.getCurrentPosition(info => {
+      this.setState({
+        initialPosition: info,
+        currentPosition: info,
+      });
+      this.updatePoints(info.coords.latitude, info.coords.longitude);
+    });
     Geolocation.watchPosition(info => this.setState({currentPosition: info}));
   }
 
@@ -56,6 +81,17 @@ class MapScreen extends React.Component {
               longitude: this.state.currentPosition.coords.longitude,
             }}
           />}
+          {this.state.recyclePoints.map(point => (
+            <Marker
+              onPress={() => this.setCurrentRecyclingPoint(point)}
+              key={point.id}
+              pinColor={'red'}
+              coordinate={{
+                latitude: point.pos_lat,
+                longitude: point.pos_lng,
+              }}
+            />
+          ))}
         </MapView>}
         <SlidingUpPanel
           ref={c => (this._panel = c)}
@@ -70,7 +106,9 @@ class MapScreen extends React.Component {
               <View style={styles.slideUpHeaderBar}/>
             </View>
             <View styles={styles.slideUpContainer}>
-              <TrashDeliverySlideUp />
+              {this.state.mode === 'recycling' && <RecyclingPointSlideUp point={this.state.currentRecyclePoint} />}
+              {this.state.mode === 'trash' && <TrashDeliverySlideUp />}
+              {this.state.mode === 'search' && <FilterSlideUp />}
             </View>
           </View>
         </SlidingUpPanel>

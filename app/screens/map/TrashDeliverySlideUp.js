@@ -84,6 +84,14 @@ export default class TrashDeliverySlideUp extends React.Component {
               style={styles.button}
             >
               <Text style={styles.buttonText}>
+                Откликнуться
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {}}
+              style={styles.buttonOutline}
+            >
+              <Text style={styles.buttonTextOutline}>
                 Маршрут
               </Text>
             </TouchableOpacity>
@@ -146,6 +154,23 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  buttonOutline: {
+    backgroundColor: '#fff',
+    borderColor: '#4BB462',
+    width: 200,
+    height: 50,
+    borderRadius: 16,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    flex: 1,
+  },
+  buttonTextOutline: {
+    color: '#4BB462',
     fontWeight: '700',
     fontSize: 16,
   },

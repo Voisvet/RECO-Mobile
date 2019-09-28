@@ -22,35 +22,18 @@ import TechnicsIcon from '../../icons/trashTypes/TechnicsIcon.svg';
 import ClockIcon from '../../icons/clock.svg';
 import BuildingIcon from '../../icons/building.svg';
 
-const trashTypes = [
-  {
-    icon: PaperIcon,
-  },
-  {
-    icon: MetalIcon,
-  },
-  {
-    icon: GlassIcon,
-  },
-  {
-    icon: PlasticIcon,
-  },
-  {
-    icon: LampIcon,
-  },
-  {
-    icon: DangerousIcon,
-  },
-  {
-    icon: ClothesIcon,
-  },
-  {
-    icon: TechnicsIcon,
-  },
-  {
-    icon: OthersIcon,
-  },
-];
+const variants = {
+  'Бумага': PaperIcon,
+  'Стекло': GlassIcon,
+  'Металл': MetalIcon,
+  'Батарейки': null,
+  'Опасные отходы': DangerousIcon,
+  'Лампочки': LampIcon,
+  'Пластик': PlasticIcon,
+  'Одежда': ClothesIcon,
+  'Бытовая техника': TechnicsIcon,
+  'Иное': OthersIcon,
+};
 
 export default class RecyclingPointSlideUp extends React.Component {
   render() {
@@ -63,20 +46,25 @@ export default class RecyclingPointSlideUp extends React.Component {
           scrollEnabled={true}
           showsHorizontalScrollIndicator={false}
         >
-          {trashTypes.map(type => (
-            <View style={styles.iconContainer}>
-              <type.icon width={SCREEN_WIDTH / 5.5} height={SCREEN_WIDTH / 5.5}/>
-            </View>
-          ))}
+          {this.props.point.trash_types.split('&').map(type => {
+            if (variants[type]) {
+              const Comp = variants[type];
+              return (
+                <View style={styles.iconContainer}>
+                  <Comp width={SCREEN_WIDTH / 5.5} height={SCREEN_WIDTH / 5.5}/>
+                </View>
+              )
+            }
+          })}
         </ScrollView>
         <View style={styles.container}>
           <View style={styles.infoBlock}>
             <ClockIcon width={30} height={30}/>
-            <Text style={styles.infoText}>Время работы</Text>
+            <Text style={styles.infoText}>Время работы: {this.props.point.open_time} - {this.props.point.close_time}</Text>
           </View>
           <View style={styles.infoBlock}>
             <BuildingIcon width={30} height={30}/>
-            <Text style={styles.infoText}>Адрес</Text>
+            <Text style={styles.infoText}>{this.props.point.address}</Text>
           </View>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
@@ -84,7 +72,7 @@ export default class RecyclingPointSlideUp extends React.Component {
               style={styles.button}
             >
               <Text style={styles.buttonText}>
-                Откликнуться
+                Маршрут
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -92,7 +80,7 @@ export default class RecyclingPointSlideUp extends React.Component {
               style={styles.buttonOutline}
             >
               <Text style={styles.buttonTextOutline}>
-                Маршрут
+                Связаться
               </Text>
             </TouchableOpacity>
           </View>
