@@ -16,6 +16,7 @@
     "react-native": "0.61.1",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-grid-component": "^2.0.0",
+    "react-native-launch-navigator": "^1.0.6",
     "react-native-maps": "^0.25.0",
     "react-native-paper": "^2.16.0",
     "react-native-svg": "^9.9.6",

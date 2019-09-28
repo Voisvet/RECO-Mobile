@@ -22,6 +22,8 @@ import TechnicsIcon from '../../icons/trashTypes/TechnicsIcon.svg';
 import ClockIcon from '../../icons/clock.svg';
 import BuildingIcon from '../../icons/building.svg';
 
+import LaunchNavigator from 'react-native-launch-navigator';
+
 const variants = {
   'Бумага': PaperIcon,
   'Стекло': GlassIcon,
@@ -36,6 +38,15 @@ const variants = {
 };
 
 export default class RecyclingPointSlideUp extends React.Component {
+  handleNavigationClick = () => {
+    LaunchNavigator.navigate([
+      this.props.point.pos_lat,
+      this.props.point.pos_lng
+    ])
+      .then(() => console.log("Launched navigator"))
+      .catch((err) => console.error("Error launching navigator: "+err));
+  };
+
   render() {
     return (
       <View>
@@ -68,7 +79,7 @@ export default class RecyclingPointSlideUp extends React.Component {
           </View>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={this.handleNavigationClick}
               style={styles.button}
             >
               <Text style={styles.buttonText}>
