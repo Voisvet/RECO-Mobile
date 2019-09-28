@@ -25,11 +25,13 @@ class MapScreen extends React.Component {
     initialPosition: undefined,
     currentPosition: undefined,
     recyclePoints: [],
-    currentRecyclePoint: undefined,
+    currentPoint: undefined,
+    trashPoints: [],
+    currentTrashPoint: undefined,
     mode: 'search',
   };
 
-  updatePoints(c_lat, c_lng, trash_type): void {
+  updateRecyclePoints(c_lat, c_lng, trash_type): void {
     const url = `https://trash-proc-app.herokuapp.com/recycles?radius=40000.0&c_lat=${c_lat}&c_lng=${c_lng}${trash_type ? `trash_types=${trash_type}` : ''}`;
     console.log(url);
     fetch(url,
@@ -40,12 +42,34 @@ class MapScreen extends React.Component {
       .then(result => this.setState({recyclePoints: result.result}));
   }
 
-  setCurrentRecyclingPoint(point) {
+  updateTrashPoints(c_lat, c_lng, trash_type): void {
+    const url = `https://trash-proc-app.herokuapp.com/trashpoints?radius=40000.0&c_lat=${c_lat}&c_lng=${c_lng}${trash_type ? `trash_types=${trash_type}` : ''}`;
+    fetch(url,
+      {
+        method: 'GET',
+      })
+      .then(response => response.json())
+      .then(result => this.setState({trashPoints: result.result}));
+  }
+
+  setCurrentPoint(point, mode) {
+    console.log(mode, point);
     this.setState({
-      currentRecyclePoint: point,
-      mode: 'recycling',
+      currentPoint: point,
+      mode,
     });
     this._panel.show();
+  }
+
+  onReset = (position) => {
+    if (position === 40) {
+      this.setState({
+        currentPoint: undefined,
+        mode: 'search',
+      });
+      this._panel.hide();
+    }
+    return true;
   }
 
   componentDidMount(): void {
@@ -54,12 +78,16 @@ class MapScreen extends React.Component {
         initialPosition: info,
         currentPosition: info,
       });
-      this.updatePoints(info.coords.latitude, info.coords.longitude);
+      this.updateRecyclePoints(info.coords.latitude, info.coords.longitude);
+      this.updateTrashPoints(info.coords.latitude, info.coords.longitude);
     });
     Geolocation.watchPosition(info => this.setState({currentPosition: info}));
   }
 
+
   render() {
+    const height = this.state.mode === 'search' ? SCREEN_HEIGHT * 0.75 : SCREEN_HEIGHT * 0.48;
+
     return (
       <View
         style={{ flex: 1, backgroundColor: 'white' }}
@@ -81,10 +109,21 @@ class MapScreen extends React.Component {
               longitude: this.state.currentPosition.coords.longitude,
             }}
           />}
+          {this.state.trashPoints.map(point => (
+            <Marker
+              onPress={() => this.setCurrentPoint(point, 'trash')}
+              key={'trash' + point.id.toString()}
+              pinColor={'blue'}
+              coordinate={{
+                latitude: point.pos_lat,
+                longitude: point.pos_lng,
+              }}
+            />
+          ))}
           {this.state.recyclePoints.map(point => (
             <Marker
-              onPress={() => this.setCurrentRecyclingPoint(point)}
-              key={point.id}
+              onPress={() => this.setCurrentPoint(point, 'recycling')}
+              key={'recycle' + point.id.toString()}
               pinColor={'red'}
               coordinate={{
                 latitude: point.pos_lat,
@@ -95,10 +134,14 @@ class MapScreen extends React.Component {
         </MapView>}
         <SlidingUpPanel
           ref={c => (this._panel = c)}
-          draggableRange={this.props.draggableRange}
+          draggableRange={{
+            ...this.props.draggableRange,
+            top: height,
+          }}
           animatedValue={this._draggedValue}
-          snappingPoints={[360]}
-          height={SCREEN_HEIGHT * 0.48}
+          onMomentumDragEnd={this.onReset}
+          onBackButtonPress={() => this.onReset(40)}
+          height={height}
           friction={0.5}
         >
           <View style={styles.slideUpPanel}>
@@ -106,8 +149,8 @@ class MapScreen extends React.Component {
               <View style={styles.slideUpHeaderBar}/>
             </View>
             <View styles={styles.slideUpContainer}>
-              {this.state.mode === 'recycling' && <RecyclingPointSlideUp point={this.state.currentRecyclePoint} />}
-              {this.state.mode === 'trash' && <TrashDeliverySlideUp />}
+              {this.state.mode === 'recycling' && <RecyclingPointSlideUp point={this.state.currentPoint} />}
+              {this.state.mode === 'trash' && <TrashDeliverySlideUp point={this.state.currentPoint} />}
               {this.state.mode === 'search' && <FilterSlideUp />}
             </View>
           </View>

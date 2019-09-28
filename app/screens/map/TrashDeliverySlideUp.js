@@ -22,35 +22,18 @@ import TechnicsIcon from '../../icons/trashTypes/TechnicsIcon.svg';
 import CoinIcon from '../../icons/coins.svg';
 import BuildingIcon from '../../icons/building.svg';
 
-const trashTypes = [
-  {
-    icon: PaperIcon,
-  },
-  {
-    icon: MetalIcon,
-  },
-  {
-    icon: GlassIcon,
-  },
-  {
-    icon: PlasticIcon,
-  },
-  {
-    icon: LampIcon,
-  },
-  {
-    icon: DangerousIcon,
-  },
-  {
-    icon: ClothesIcon,
-  },
-  {
-    icon: TechnicsIcon,
-  },
-  {
-    icon: OthersIcon,
-  },
-];
+const variants = {
+  'Бумага': PaperIcon,
+  'Стекло': GlassIcon,
+  'Металл': MetalIcon,
+  'Батарейки': null,
+  'Опасные отходы': DangerousIcon,
+  'Лампочки': LampIcon,
+  'Пластик': PlasticIcon,
+  'Одежда': ClothesIcon,
+  'Бытовая техника': TechnicsIcon,
+  'Иное': OthersIcon,
+};
 
 export default class TrashDeliverySlideUp extends React.Component {
   render() {
@@ -63,11 +46,16 @@ export default class TrashDeliverySlideUp extends React.Component {
           scrollEnabled={true}
           showsHorizontalScrollIndicator={false}
         >
-          {trashTypes.map(type => (
-            <View style={styles.iconContainer}>
-              <type.icon width={SCREEN_WIDTH / 5.5} height={SCREEN_WIDTH / 5.5}/>
-            </View>
-          ))}
+          {this.props.point.trash_types.split('&').map(type => {
+            if (variants[type]) {
+              const Comp = variants[type];
+              return (
+                <View style={styles.iconContainer}>
+                  <Comp width={SCREEN_WIDTH / 5.5} height={SCREEN_WIDTH / 5.5}/>
+                </View>
+              );
+            }
+          })}
         </ScrollView>
         <View style={styles.container}>
           <View style={styles.infoBlock}>
@@ -76,7 +64,7 @@ export default class TrashDeliverySlideUp extends React.Component {
           </View>
           <View style={styles.infoBlock}>
             <BuildingIcon width={30} height={30}/>
-            <Text style={styles.infoText}>Адрес</Text>
+            <Text style={styles.infoText}>{this.props.point.address}</Text>
           </View>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity

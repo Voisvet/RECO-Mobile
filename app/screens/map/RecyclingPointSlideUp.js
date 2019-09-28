@@ -53,7 +53,7 @@ export default class RecyclingPointSlideUp extends React.Component {
                 <View style={styles.iconContainer}>
                   <Comp width={SCREEN_WIDTH / 5.5} height={SCREEN_WIDTH / 5.5}/>
                 </View>
-              )
+              );
             }
           })}
         </ScrollView>
