@@ -6,6 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import MapIcon from '../../icons/MapIcon';
 import FilterSlideUp from './FilterSlideUp';
 import RecyclingPointSlideUp from './RecyclingPointSlideUp';
+import TrashDeliverySlideUp from './TrashDeliverySlideUp';
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 class MapScreen extends React.Component {
@@ -69,7 +70,7 @@ class MapScreen extends React.Component {
               <View style={styles.slideUpHeaderBar}/>
             </View>
             <View styles={styles.slideUpContainer}>
-              <RecyclingPointSlideUp />
+              <TrashDeliverySlideUp />
             </View>
           </View>
         </SlidingUpPanel>
