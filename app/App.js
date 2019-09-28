@@ -10,9 +10,9 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 
-import AccountScreen from './account';
-import InfoScreen from './info';
-import MapScreen from './map';
+import AccountScreen from './screens/account';
+import InfoScreen from './screens/info';
+import MapScreen from './screens/map';
 
 const bottomNavigation = createMaterialBottomTabNavigator(
   {
@@ -22,7 +22,7 @@ const bottomNavigation = createMaterialBottomTabNavigator(
   },
   {
     initialRouteName: 'MapScreen',
-    activeColor: '#00DC7D',
+    activeColor: '#4BB462',
     inactiveColor: '#666666',
     barStyle: {backgroundColor: '#ffffff'},
   },

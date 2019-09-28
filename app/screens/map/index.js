@@ -3,7 +3,8 @@ import { View, Dimensions, Text, StyleSheet, Animated } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Geolocation from '@react-native-community/geolocation';
-import MapIcon from './MapIcon';
+import MapIcon from '../../icons/MapIcon';
+import FilterSlideUp from "./FilterSlideUp";
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 class MapScreen extends React.Component {
@@ -13,10 +14,10 @@ class MapScreen extends React.Component {
   };
 
   static defaultProps = {
-    draggableRange: { top: SCREEN_HEIGHT * 0.75, bottom: 50 },
+    draggableRange: { top: SCREEN_HEIGHT * 0.75, bottom: 40 },
   };
 
-  _draggedValue = new Animated.Value(50);
+  _draggedValue = new Animated.Value(40);
 
   state = {
     initialPosition: undefined,
@@ -24,7 +25,10 @@ class MapScreen extends React.Component {
   };
 
   componentDidMount(): void {
-    Geolocation.getCurrentPosition(info => this.setState({initialPosition: info}));
+    Geolocation.getCurrentPosition(info => this.setState({
+      initialPosition: info,
+      currentPosition: info,
+    }));
     Geolocation.watchPosition(info => this.setState({currentPosition: info}));
   }
 
@@ -59,12 +63,12 @@ class MapScreen extends React.Component {
           height={SCREEN_HEIGHT * 0.75}
           friction={0.5}
         >
-          <View style={styles.panel}>
-            <View style={styles.panelHeader}>
-              <Text style={styles.textHeader}>Sliding Up Panel</Text>
+          <View style={styles.slideUpPanel}>
+            <View style={styles.slideUpPanelHeader}>
+              <View style={styles.slideUpHeaderBar}/>
             </View>
-            <View styles={styles.container}>
-              <Text>Bottom sheet content</Text>
+            <View styles={styles.slideUpContainer}>
+              <FilterSlideUp />
             </View>
           </View>
         </SlidingUpPanel>
@@ -74,24 +78,45 @@ class MapScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  slideUpContainer: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: 'transparent',
+    borderColor: 'red'
   },
-  panel: {
+  slideUpPanel: {
     flex: 1,
     backgroundColor: 'white',
     position: 'relative',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowOpacity: 1.0,
+    shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: -3,
+    },
+    shadowColor: '#000000',
+    elevation: 4,
   },
-  panelHeader: {
-    height: 50,
-    backgroundColor: '#b197fc',
+  slideUpPanelHeader: {
+    height: 40,
+    backgroundColor: '#ffffff',
     justifyContent: 'flex-end',
+    alignItems: 'center',
     padding: 24,
+    paddingTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  slideUpHeaderBar: {
+    backgroundColor: '#4BB462',
+    height: 8,
+    width: '20%',
+    borderRadius: 4,
   },
   textHeader: {
     fontSize: 14,
-    color: '#FFF',
+    color: '#000',
   },
 });
 

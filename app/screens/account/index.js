@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import AccountIcon from "./AccountIcon";
+import AccountIcon from "../../icons/AccountIcon";
 
 class AccountScreen extends React.Component {
   static navigationOptions = {
