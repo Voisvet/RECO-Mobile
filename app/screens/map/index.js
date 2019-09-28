@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Dimensions, Text, StyleSheet, Animated } from 'react-native';
+import { View, Dimensions, StyleSheet, Animated } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Geolocation from '@react-native-community/geolocation';
 import MapIcon from '../../icons/MapIcon';
-import FilterSlideUp from "./FilterSlideUp";
+import FilterSlideUp from './FilterSlideUp';
+import RecyclingPointSlideUp from './RecyclingPointSlideUp';
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 class MapScreen extends React.Component {
@@ -14,7 +15,7 @@ class MapScreen extends React.Component {
   };
 
   static defaultProps = {
-    draggableRange: { top: SCREEN_HEIGHT * 0.75, bottom: 40 },
+    draggableRange: { top: SCREEN_HEIGHT * 0.48, bottom: 40 },
   };
 
   _draggedValue = new Animated.Value(40);
@@ -60,7 +61,7 @@ class MapScreen extends React.Component {
           draggableRange={this.props.draggableRange}
           animatedValue={this._draggedValue}
           snappingPoints={[360]}
-          height={SCREEN_HEIGHT * 0.75}
+          height={SCREEN_HEIGHT * 0.48}
           friction={0.5}
         >
           <View style={styles.slideUpPanel}>
@@ -68,7 +69,7 @@ class MapScreen extends React.Component {
               <View style={styles.slideUpHeaderBar}/>
             </View>
             <View styles={styles.slideUpContainer}>
-              <FilterSlideUp />
+              <RecyclingPointSlideUp />
             </View>
           </View>
         </SlidingUpPanel>
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
   slideUpContainer: {
     flex: 1,
     backgroundColor: 'transparent',
-    borderColor: 'red'
+    borderColor: 'red',
   },
   slideUpPanel: {
     flex: 1,
