@@ -1,9 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
+import AccountIcon from "./AccountIcon";
 
 class AccountScreen extends React.Component {
   static navigationOptions = {
-    title: 'Account',
+    title: 'Профиль',
+    tabBarIcon: ({ tintColor }: { tintColor: string }) => <AccountIcon strokeColor={tintColor}/>
   };
 
   render() {

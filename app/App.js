@@ -22,9 +22,9 @@ const bottomNavigation = createMaterialBottomTabNavigator(
   },
   {
     initialRouteName: 'MapScreen',
-    activeColor: '#f0edf6',
-    inactiveColor: '#3e2465',
-    barStyle: {backgroundColor: '#694fad'},
+    activeColor: '#00DC7D',
+    inactiveColor: '#666666',
+    barStyle: {backgroundColor: '#ffffff'},
   },
 );
 

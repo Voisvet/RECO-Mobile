@@ -2,11 +2,14 @@ import React from 'react';
 import { View, Dimensions, Text, StyleSheet, Animated } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import SlidingUpPanel from 'rn-sliding-up-panel';
+import Geolocation from '@react-native-community/geolocation';
+import MapIcon from './MapIcon';
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 class MapScreen extends React.Component {
   static navigationOptions = {
-    title: 'Map',
+    title: 'Карта',
+    tabBarIcon: ({ tintColor }: { tintColor: string }) => <MapIcon strokeColor={tintColor}/>,
   };
 
   static defaultProps = {
@@ -15,30 +18,39 @@ class MapScreen extends React.Component {
 
   _draggedValue = new Animated.Value(50);
 
+  state = {
+    initialPosition: undefined,
+    currentPosition: undefined,
+  };
+
+  componentDidMount(): void {
+    Geolocation.getCurrentPosition(info => this.setState({initialPosition: info}));
+    Geolocation.watchPosition(info => this.setState({currentPosition: info}));
+  }
+
   render() {
     return (
       <View
         style={{ flex: 1, backgroundColor: 'white' }}
       >
-        <MapView
+        {this.state.initialPosition && <MapView
           provider={PROVIDER_GOOGLE}
           style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT }}
           initialRegion={{
-            latitude: 28.623999,
-            longitude: 77.383707,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
+            latitude: this.state.initialPosition.coords.latitude,
+            longitude: this.state.initialPosition.coords.longitude,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
           }}
         >
-          <Marker
+          {this.state.currentPosition && <Marker
             pinColor={'green'}
-            coordinate={{ latitude: 77.383707, longitude: 77.383707 }}
-          />
-          <Marker
-            pinColor={'blue'}
-            coordinate={{ latitude: 28.469619, longitude: 77.038272 }}
-          />
-        </MapView>
+            coordinate={{
+              latitude: this.state.currentPosition.coords.latitude,
+              longitude: this.state.currentPosition.coords.longitude,
+            }}
+          />}
+        </MapView>}
         <SlidingUpPanel
           ref={c => (this._panel = c)}
           draggableRange={this.props.draggableRange}
